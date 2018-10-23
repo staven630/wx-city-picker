@@ -1,6 +1,6 @@
 // components/miniprogram-city-picker/index.js
 
-import { CityList } from './pca.js';
+import { CityList } from './pca';
 export const IS_EMPTY = /^\s*$/;
 
 Component({

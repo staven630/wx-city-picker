@@ -66,3 +66,6 @@ Page({
 
 })
 ```
+
+# 其他小程序插件
+* [miniprogram-slide-tabs:类似可滑动的新闻菜单栏](https://github.com/staven630/miniprogram-slide-tabs)
