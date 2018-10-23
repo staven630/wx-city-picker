@@ -1,0 +1,24 @@
+<!--components/miniprogram-city-picker/index.wxml-->
+<view>
+  <slot></slot>
+  <view class="{{show ? 'city-picker-wrapper show' : 'city-picker-wrapper'}}">
+    <view class="city-picker-shadow" catch:tap="hideCityPicker"></view>
+    <view class="city-picker-box">
+      <view class="city-picker-header">
+        <view class="city-picker-cancel" catch:tap="hideCityPicker">取消</view>
+        <view class="city-picker-submit" catch:tap="submitCityPicker">确定</view>
+      </view>
+      <picker-view indicator-class="custom-picker" indicator-style="height: 40px;" style="width: 100%; height: 200px; line-height: 40px; text-align: center;" value="{{value}}" bindchange="changeCityPicker">
+        <picker-view-column>
+          <view wx:for="{{ cityList }}" wx:key="{{item.id}}">{{ item.name }}</view>
+        </picker-view-column>
+        <picker-view-column>
+          <view wx:for="{{citys}}" wx:key="{{item.id}}">{{item.name}}</view>
+        </picker-view-column>
+        <picker-view-column wx:if="{{mode === 1}}">
+          <view wx:for="{{areas}}" wx:key="{{item.id}}">{{item.name}}</view>
+        </picker-view-column>
+      </picker-view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,74 @@
+/* components/miniprogram-city-picker/index.wxss */
+
+.city-picker-wrapper {
+  position: fixed;
+  top: 100vh;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  z-index: 20000;
+  transition: 0.3s all ease-in-out;
+}
+
+.city-picker-wrapper.show {
+  top: 0;
+}
+
+.city-picker-shadow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.65);
+}
+
+.city-picker-header {
+  padding: 0 10px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  border-bottom: 1px solid #eee;
+  box-sizing: border-box;
+}
+
+.city-picker-submit {
+  color: #33ac37;
+}
+
+.city-picker-header view {
+  padding: 10px;
+}
+
+.custom-picker {
+  width: 100%;
+  height: 200px;
+}
+
+.custom-picker view {
+  line-height: 40px;
+  text-align: center;
+}
+
+.city-picker-box {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 300000;
+  background-color: #fff;
+}
+
+.city-picker-shadow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: calc(100% - 240);
+  z-index: 200000;
+  display: none;
+}
+
+.show .city-picker-shadow {
+  display: block;
+}
