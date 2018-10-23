@@ -26,7 +26,7 @@
 ```
 {
   "usingComponents": {
-    "slide-tabs": "../../components/miniprogram-city-picker/index"
+    "city-picker": "../../components/miniprogram-city-picker/index"
   }
 }
 ```
