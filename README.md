@@ -35,7 +35,7 @@
 ```
 <button bindtap='onChange'>显示</button>
 
-<city-picker mode="2" show="{{show}}" codes="{{codes}}" bindhide="onHide" bindselect="onSelect">
+<city-picker mode="2" show="{{show}}" codes="{{codes}}" bindhide="onHidePicker" bindselect="onSelect">
   <input value="{{city}}" />
 </city-picker>
 ```
@@ -52,7 +52,7 @@ Page({
       show: !this.data.show 
     })
 	},
-  onHide(e) {
+  onHidePicker(e) {
     this.setData({
       show: false
     })
