@@ -21,6 +21,7 @@
 | bindhide | Function | true | 关闭省市区选择器 |
 | bindselect | Function | true | 返回选中省市(区)信息 |
 
+# 使用
 ### 引入
 ```
 {
@@ -30,7 +31,6 @@
 }
 ```
 
-# 使用
 ### wxml
 ```
 <button bindtap='onChange'>显示</button>
