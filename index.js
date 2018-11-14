@@ -91,7 +91,9 @@ Component({
         value[0] = 0;
         citys = this.hasLength('children', 0, cityList, []);
         areas = mode === 2 ? [] : this.hasLength('children', 0, citys, []);
-        value = mode === 2 ? value.length = 2 : value;
+        if (mode === 2 && value.length === 3) {
+          value.length = 2;
+        }
       } else {
         const currentProvince = this.getCityItem('children', cityList, codes[0]);
         citys = currentProvince.item;
