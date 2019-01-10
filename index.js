@@ -1,8 +1,3 @@
-// components/miniprogram-city-picker/index.js
-
-import { CityList } from './pca';
-export const IS_EMPTY = /^\s*$/;
-
 Component({
   /**
    * 组件的属性列表
@@ -16,14 +11,21 @@ Component({
       type: Array,
       value: []
     },
-    show: {
-      type: Boolean,
-      value: false,
-      observer: function (newVal) {
-        if (newVal) {
-          this.initPicker();
-        }
-      }
+    childkey: {
+      type: String,
+      value: 'children'
+    },
+    idkey: {
+      type: String,
+      value: 'id'
+    },
+    namekey: {
+      type: String,
+      value: 'name'
+    },
+    data: {
+      type: Array,
+      value: []
     }
   },
 
@@ -32,29 +34,29 @@ Component({
    */
   data: {
     value: [0, 0, 0],
-    cityList: CityList,
     citys: [],
-    areas: []
+    areas: [],
+    show: false
   },
   /**
    * 组件的方法列表
    */
   methods: {
-    hasValue(key, oldValue, newValue) {
-      return typeof oldValue[key] !== 'undefined' ? oldValue[key] : newValue;
+    hasValue(list) {
+      const { childkey } = this.properties
+      return this.isUndefined(list[childkey]) ? [] : list[childkey]
     },
 
-    hasLength(key, index, oldValue, newValue) {
-      if (typeof oldValue[index] === 'undefined') return newValue;
-      return this.hasValue(key, oldValue[index], newValue);
+    hasIndex(index, list) {
+      return this.isUndefined(list[index]) ? [] : this.hasValue(list[index])
     },
 
-    key2Value(obj, idx, key) {
-      return typeof obj[idx] === 'undefined' ? '' : obj[idx][key];
+    key2Value(list, idx, key) {
+      return this.isUndefined(list[idx]) ? '' : list[idx][key]
     },
 
     getCityCodeItem(list, id) {
-      let i = 0;
+      let i = 0
       while (i < list.length) {
         if (list[i].id == id) {
           return {
@@ -62,103 +64,116 @@ Component({
             index: i
           }
         }
-        i++;
+        i++
       }
-      return null;
+      return null
     },
 
-    getCityItem(key, list, id) {
-      let result = this.getCityCodeItem(list, id);
-      if (!result) {
-        return list.length > 0 ? { item: list[0], index: 0 } : { item: [], index: 0 };
-      } else {
-        return typeof result.item[key] === 'undefined' ?
-          {
-            item: [],
-            index: result.index
-          } : {
-            item: result.item[key],
-            index: result.index
-          }
+    getCityItem(list, id) {
+      const { childkey } = this.properties
+      let result = this.getCityCodeItem(list, id)
+      if (!result) return { item: list.length > 0 ? list[0] : [], index: 0 }
+      return {
+        item: this.isUndefined(result.item[childkey])
+          ? []
+          : result.item[childkey],
+        index: result.index
       }
     },
+
+    isUndefined(value) {
+      return typeof value === 'undefined'
+    },
+
+    isEmpty(value) {
+      if (Array.isArray(value) && value.length === 0) return true
+      return this.isUndefined(value) || /^\s*$/.test(value)
+    },
+
     // 初始化选择器信息
-    initPicker() {
-      let { value, cityList, mode, codes } = this.data;
-      let citys = [];
-      let areas = [];
-      if (typeof codes === 'undefined' || IS_EMPTY.test(codes)) {
-        value[0] = 0;
-        citys = this.hasLength('children', 0, cityList, []);
-        areas = mode === 2 ? [] : this.hasLength('children', 0, citys, []);
-        if (mode === 2 && value.length === 3) {
-          value.length = 2;
-        }
+    togglePicker() {
+      let { value, cityList, mode, codes, show, data } = this.data
+      if (show) return this.setData({ show: !show })
+      if (mode === 2) value.length = 2
+
+      let citys = []
+      let areas = []
+      if (this.isEmpty(codes)) {
+        value = new Array(mode === 2 ? 2 : 3).fill(0)
+        citys = this.hasIndex(0, data)
+        areas = mode == 1 ? this.hasIndex(0, citys) : []
       } else {
-        const currentProvince = this.getCityItem('children', cityList, codes[0]);
-        citys = currentProvince.item;
-        const currentCity = this.getCityItem('children', citys, codes[1]);
+        const currentProvince = this.getCityItem(cityList, codes[0])
+        citys = currentProvince.item
+        const currentCity = this.getCityItem(citys, codes[1])
         if (mode == 2) {
-          areas = [];
-          value = [currentProvince.index, currentCity.index];
+          areas = []
+          value = [currentProvince.index, currentCity.index]
         } else {
-          areas = currentCity.item;
-          const currentArea = this.getCityItem('children', areas, codes[2]);
-          value = [currentProvince.index, currentCity.index, currentArea.index];
+          areas = currentCity.item
+          const currentArea = this.getCityItem(areas, codes[2])
+          value = [currentProvince.index, currentCity.index, currentArea.index]
         }
       }
-      this.setData({
-        mode,
+      const params = {
         value,
         citys,
-        areas
-      })
+        show: !show
+      }
+      this.setData(mode == 1 ? { ...params, areas } : params)
     },
     // 列滚动
     changeCityPicker(e) {
-      const changeValue = e.detail.value;
-      const { value, mode, cityList } = this.data;
-      let { citys, areas } = this.data;
-      if (changeValue[0] !== value[0]) {
-        const currentCity = cityList[changeValue[0]];
-        citys = this.hasValue('children', currentCity, []);
-        areas = mode == 2 ? [] : this.hasLength('children', 0, citys, []);
-      } else if (changeValue[1] !== value[1]) {
-        areas = mode == 2 ? [] : this.hasLength('children', changeValue[1], citys, []);
+      const val = e.detail.value
+      let { citys, areas, value, mode, data } = this.data
+      if (val[0] !== value[0]) {
+        const currentCity = data[val[0]]
+        citys = this.hasValue(currentCity)
+        areas = mode == 2 ? [] : this.hasIndex(0, citys)
+        value = mode == 2 ? [val[0], 0] : [val[0], 0, 0]
+      } else if (val[1] !== value[1]) {
+        areas = mode == 2 ? [] : this.hasIndex(val[1], citys)
+        value = mode == 2 ? [val[0], val[1]] : [val[0], val[1], 0]
+      } else if (mode === 1 && val[2] !== value[2]) {
+        value = val
       }
 
-      this.setData({
-        value: changeValue,
-        citys,
-        areas
-      });
+      const params = { value, citys }
+      this.setData(mode == 1 ? { ...params, areas } : params)
     },
     // 确认
     submitCityPicker() {
-      const { cityList, citys, areas, value, mode } = this.data;
-      this.setData({
-        show: false
-      }, () => {
-        let result = mode === 2 ?
-          {
-            code: [this.key2Value(cityList, value[0], 'id'), this.key2Value(citys, value[1], 'id')],
-            value: [this.key2Value(cityList, value[0], 'name'), this.key2Value(citys, value[1], 'name')]
-          } :
-          {
-            code: [this.key2Value(cityList, value[0], 'id'), this.key2Value(citys, value[1], 'id'), this.key2Value(areas, value[2], 'id')],
-            value: [this.key2Value(cityList, value[0], 'name'), this.key2Value(citys, value[1], 'name'), this.key2Value(areas, value[2], 'name')]
-          };
-        this.triggerEvent('hide', true);
-        this.triggerEvent('select', result);
-      });
+      const { data, citys, areas, value, mode, idkey, namekey } = this.data
+      this.setData(
+        {
+          show: false
+        },
+        () => {
+          const codeList = [
+            this.key2Value(data, value[0], idkey),
+            this.key2Value(citys, value[1], idkey)
+          ]
+          const valueList = [
+            this.key2Value(data, value[0], namekey),
+            this.key2Value(citys, value[1], namekey)
+          ]
+          const result =
+            mode === 2
+              ? {
+                  code: codeList,
+                  value: valueList
+                }
+              : {
+                  code: [...codeList, this.key2Value(areas, value[2], 'id')],
+                  value: [...valueList, this.key2Value(areas, value[2], 'name')]
+                }
+          this.triggerEvent('select', result)
+        }
+      )
     },
     // 取消
     hideCityPicker() {
-      this.setData({
-        show: false
-      }, () => {
-        this.triggerEvent('hide', true)
-      });
+      this.setData({ show: false })
     }
   }
 })
