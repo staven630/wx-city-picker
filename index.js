@@ -164,8 +164,8 @@ Component({
                   value: valueList
                 }
               : {
-                  code: [...codeList, this.key2Value(areas, value[2], 'id')],
-                  value: [...valueList, this.key2Value(areas, value[2], 'name')]
+                  code: [...codeList, this.key2Value(areas, value[2], idkey)],
+                  value: [...valueList, this.key2Value(areas, value[2], namekey)]
                 }
           this.triggerEvent('select', result)
         }
