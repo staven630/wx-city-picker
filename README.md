@@ -2,7 +2,7 @@
 
 小程序城市选择器， 省市区三级联动
 
-![小程序城市选择器](https://github.com/staven630/miniprogram-city-picker/blob/master/miniprogram-city-picker.gif '小程序城市选择器')
+![小程序城市选择器](https://github.com/staven630/miniprogram-city-picker/blob/master/miniprogram-city-picker.gif)
 
 # 配置
 
