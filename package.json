@@ -1,6 +1,6 @@
 {
   "name": "wx-city-picker",
-  "version": "0.0.2",
+  "version": "0.0.5",
   "description": "小程序城市选择器， 省市区三级联动",
   "main": "index.js",
   "scripts": {

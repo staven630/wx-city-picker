@@ -1,7 +1,4 @@
 Component({
-  /**
-   * 组件的属性列表
-   */
   properties: {
     mode: {
       type: Number,
@@ -28,19 +25,12 @@ Component({
       value: []
     }
   },
-
-  /**
-   * 组件的初始数据
-   */
   data: {
     value: [0, 0, 0],
     citys: [],
     areas: [],
     show: false
   },
-  /**
-   * 组件的方法列表
-   */
   methods: {
     hasValue(list) {
       const { childkey } = this.properties
@@ -92,7 +82,7 @@ Component({
 
     // 初始化选择器信息
     togglePicker() {
-      let { value, cityList, mode, codes, show, data } = this.data
+      let { value, mode, codes, show, data } = this.data
       if (show) return this.setData({ show: !show })
       if (mode === 2) value.length = 2
 
@@ -103,7 +93,7 @@ Component({
         citys = this.hasIndex(0, data)
         areas = mode == 1 ? this.hasIndex(0, citys) : []
       } else {
-        const currentProvince = this.getCityItem(cityList, codes[0])
+        const currentProvince = this.getCityItem(data, codes[0])
         citys = currentProvince.item
         const currentCity = this.getCityItem(citys, codes[1])
         if (mode == 2) {
