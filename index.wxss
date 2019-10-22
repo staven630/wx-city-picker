@@ -1,6 +1,6 @@
 /* components/miniprogram-city-picker/index.wxss */
 
-.city-picker-wrapper {
+.city-picker-container {
   position: fixed;
   top: 100vh;
   left: 0;
@@ -10,7 +10,7 @@
   transition: 0.3s all ease-in-out;
 }
 
-.city-picker-wrapper.show {
+.city-picker-container.show {
   top: 0;
 }
 

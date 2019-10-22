@@ -1,5 +1,5 @@
 <view class="city-picker">
-  <view class="city-picker-view" bind:tap="togglePicker">
+  <view class="city-picker-view" bindtap="togglePicker">
     <slot></slot>
   </view>
   <view class="city-picker-container{{show ? ' show' : ''}}">

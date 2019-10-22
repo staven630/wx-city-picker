@@ -54,11 +54,11 @@ npm i -S wx-city-picker
 ### wxml
 
 ```
-<my-city-picker codes="{{codes}}" data="{{citylist}}"  bind:select="onSelect">
+<city-picker codes="{{codes}}" data="{{citylist}}"  bind:select="onSelect">
   <view class="input-picker">
     {{city}}
   </view>
-</my-city-picker>
+</city-picker>
 ```
 
 ### js
