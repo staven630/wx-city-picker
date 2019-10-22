@@ -1,0 +1,7 @@
+/* pages/demo/index.wxss */
+
+.input-picker {
+  height: 60rpx;
+  width: 100%;
+  background: red;
+}

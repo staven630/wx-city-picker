@@ -1,0 +1,8 @@
+<!--pages/demo/index.wxml-->
+<view class="wrapper">
+  <city-picker codes="{{codes}}" data="{{citylist}}"  bind:select="onSelect">
+  <view class="input-picker" >
+    {{city}}
+  </view>
+  </city-picker>
+</view>
